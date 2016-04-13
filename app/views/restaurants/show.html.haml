@@ -1,2 +1,13 @@
 %p= @restaurant.name
 %p= @restaurant.description
+
+- if @restaurant.reviews.any?
+  - @restaurant.reviews.each do |review|	
+    %ul 
+      %li
+        = review.thoughts
+      %li
+        %strong= review.rating 
+        \/5
+- else
+  %p No reviews
