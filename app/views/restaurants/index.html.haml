@@ -1,9 +1,12 @@
 - if @restaurants.any?
   - @restaurants.each do |restaurant|
     %h2= link_to restaurant.name, restaurant_path(restaurant)
-    = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
-    = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
-    = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
+    
+    - if user_signed_in? && current_user == User.first(restaurant.user_id)
+      = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
+      = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
+    - if user_signed_in? && restaurant.reviews.first(current_user.id).empty?
+      = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)  
     - if restaurant.reviews.any?
       - restaurant.reviews.each do |review|	
         %ul 
